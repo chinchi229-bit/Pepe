@@ -1,0 +1,52 @@
+{
+  "equipo": "Team Example",
+  "ciudad": "Medellín",
+  "año": 2026,
+  "integrantes": [
+    "Juan Developer",
+    "María Robotics",
+    "Pedro Code"
+  ],
+  "robotId": "EXAMPLE_1",
+  "hardware": {
+    "microcontrolador": "ESP32 DevKit v1",
+    "motorMotriz": "2x DC Motor 200RPM",
+    "motorPaleta": "1x DC Motor 300RPM",
+    "drivers": "L298N"
+  },
+  "configuracion": {
+    "velocidadMaxima": 255,
+    "velocidadTurbo": 255,
+    "aceleracion": 50,
+    "friccion": 0.5
+  },
+  "pines": {
+    "motorIzquierdo": {
+      "pwm": 25,
+      "in1": 32,
+      "in2": 33
+    },
+    "motorDerecho": {
+      "pwm": 14,
+      "in1": 26,
+      "in2": 27
+    },
+    "paleta": {
+      "pwm": 4,
+      "in1": 16,
+      "in2": 17
+    },
+    "sensores": {
+      "linea": 34,
+      "distancia": 35
+    }
+  },
+  "conexion": {
+    "wifiSSID": "EJEMPLO_WIFI",
+    "serverIP": "192.168.1.100",
+    "serverPuerto": 3000,
+    "tiempoReconexion": 5000
+  },
+  "descripcion": "Implementación de referencia para RoboFut 2026",
+  "notas": "Este es un template. Reemplaza con tu configuración."
+}

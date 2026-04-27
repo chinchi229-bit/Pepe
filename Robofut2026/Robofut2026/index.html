@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoboFut 3v3 - Tutorial</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 0;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #00bfff, #ff4444);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #ccc;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(0, 191, 255, 0.3);
+            border-radius: 10px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: #00bfff;
+            background: rgba(0, 191, 255, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .card h2 {
+            color: #00bfff;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .card.red h2 {
+            color: #ff4444;
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(to right, #00bfff, #0099ff);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin: 10px 5px;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 191, 255, 0.5);
+        }
+
+        .btn.red {
+            background: linear-gradient(to right, #ff4444, #ff0000);
+        }
+
+        .controls-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid #00bfff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .control-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .control-item:last-child {
+            border-bottom: none;
+        }
+
+        .key {
+            background: rgba(0, 191, 255, 0.2);
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+        }
+
+        .gamepad {
+            background: rgba(255, 100, 0, 0.2);
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+        }
+
+        .specs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .spec {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid rgba(0, 191, 255, 0.3);
+        }
+
+        .spec-label {
+            color: #00bfff;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .spec-value {
+            font-size: 1.3em;
+            color: #fff;
+        }
+
+        code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline-item {
+            padding: 20px;
+            padding-left: 50px;
+            position: relative;
+            background: rgba(255, 255, 255, 0.05);
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border-left: 4px solid #00bfff;
+        }
+
+        .timeline-number {
+            position: absolute;
+            left: -15px;
+            top: 20px;
+            background: #00bfff;
+            color: #1a1a2e;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: #888;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 60px;
+        }
+
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 10px;
+        }
+
+        .features-list {
+            list-style: none;
+            padding: 20px;
+        }
+
+        .features-list li {
+            padding: 10px;
+            margin: 5px 0;
+            background: rgba(0, 191, 255, 0.1);
+            border-left: 3px solid #00bfff;
+            border-radius: 3px;
+        }
+
+        .features-list li:before {
+            content: "✓ ";
+            color: #00ff00;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .warning {
+            background: rgba(255, 200, 0, 0.2);
+            border-left: 4px solid #ffcc00;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 ROBOFUT 3v3 SIMULATOR 🤖</h1>
+            <p class="subtitle">Simulación virtual lista para competencia</p>
+        </header>
+
+        <!-- INICIO RÁPIDO -->
+        <section class="grid">
+            <div class="card">
+                <h2><span class="emoji">🎮</span>COMIENZA AQUÍ</h2>
+                <p>Abre el juego directamente sin instalación:</p>
+                <a href="robofut_game.html" class="btn">JUGAR AHORA</a>
+                <p style="margin-top: 15px; font-size: 0.9em; color: #aaa;">
+                    Solo necesitas un navegador moderno
+                </p>
+            </div>
+
+            <div class="card">
+                <h2><span class="emoji">📦</span>SERVIDOR (Opcional)</h2>
+                <p>Para usar con ESP32 real o multiplayer:</p>
+                <p style="margin: 10px 0;"><code>npm install && npm start</code></p>
+                <p style="margin-top: 15px; font-size: 0.9em; color: #aaa;">
+                    Requiere Node.js instalado
+                </p>
+            </div>
+
+            <div class="card">
+                <h2><span class="emoji">📚</span>DOCUMENTACIÓN</h2>
+                <p>Lee los archivos de referencia:</p>
+                <ul class="features-list" style="margin-top: 10px;">
+                    <li>ROBOFUT_README.md - Guía principal</li>
+                    <li>SETUP.md - Instalación detallada</li>
+                    <li>MAINTAINER.md - Resumen completo</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ESPECIFICACIONES DEL ROBOT -->
+        <section>
+            <h2 style="margin: 40px 0 20px; color: #00bfff;">🤖 ESPECIFICACIONES DEL ROBOT</h2>
+            <div class="specs">
+                <div class="spec">
+                    <div class="spec-label">Tamaño</div>
+                    <div class="spec-value">4 x 2 x 6 cm</div>
+                </div>
+                <div class="spec">
+                    <div class="spec-label">Motores traseros</div>
+                    <div class="spec-value">2 DC Motors</div>
+                </div>
+                <div class="spec">
+                    <div class="spec-label">Paleta</div>
+                    <div class="spec-value">1 Motor giratorio</div>
+                </div>
+                <div class="spec">
+                    <div class="spec-label">Masa</div>
+                    <div class="spec-value">2 kg (simulada)</div>
+                </div>
+                <div class="spec">
+                    <div class="spec-label">Velocidad máxima</div>
+                    <div class="spec-value">0.3 u/tick</div>
+                </div>
+                <div class="spec">
+                    <div class="spec-label">Turbo</div>
+                    <div class="spec-value">0.6 u/tick</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTROLES -->
+        <section>
+            <h2 style="margin: 40px 0 20px; color: #00bfff;">⌨️ CONTROLES</h2>
+
+            <div class="controls-section">
+                <h3>Teclado</h3>
+                <div class="control-item">
+                    <span>Movimiento adelante/atrás</span>
+                    <span class="key">W / S</span>
+                </div>
+                <div class="control-item">
+                    <span>Giro izquierda/derecha</span>
+                    <span class="key">A / D</span>
+                </div>
+                <div class="control-item">
+                    <span>Girar paleta</span>
+                    <span class="key">Q / E</span>
+                </div>
+                <div class="control-item">
+                    <span>Turbo</span>
+                    <span class="key">ESPACIO</span>
+                </div>
+            </div>
+
+            <div class="controls-section" style="border-left-color: #ff9900;">
+                <h3 style="color: #ff9900;">Gamepad (Xbox/PS4)</h3>
+                <div class="control-item">
+                    <span>Movimiento</span>
+                    <span class="gamepad">Left Stick</span>
+                </div>
+                <div class="control-item">
+                    <span>Girar paleta</span>
+                    <span class="gamepad">LB / RB</span>
+                </div>
+                <div class="control-item">
+                    <span>Turbo</span>
+                    <span class="gamepad">A / X</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- REGLAS -->
+        <section>
+            <h2 style="margin: 40px 0 20px; color: #00bfff;">⚽ REGLAS DEL JUEGO</h2>
+            <div class="grid" style="margin: 20px 0;">
+                <div class="card">
+                    <h3 style="color: #00bfff;">Duración</h3>
+                    <p>5 minutos de juego</p>
+                    <p style="font-size: 0.9em; color: #888;">Configurable en config.js</p>
+                </div>
+                <div class="card">
+                    <h3 style="color: #00bfff;">Equipos</h3>
+                    <p>3v3 (Azul vs Rojo)</p>
+                    <p style="font-size: 0.9em; color: #888;">3 robots por equipo</p>
+                </div>
+                <div class="card">
+                    <h3 style="color: #00bfff;">Goles</h3>
+                    <p>Zona de portería marcada</p>
+                    <p style="font-size: 0.9em; color: #888;">Automáticamente detectados</p>
+                </div>
+                <div class="card">
+                    <h3 style="color: #00bfff;">Ganador</h3>
+                    <p>Mayor cantidad de goles</p>
+                    <p style="font-size: 0.9em; color: #888;">Se muestra al terminar</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- INSTALACIÓN PASO A PASO -->
+        <section>
+            <h2 style="margin: 40px 0 20px; color: #00bfff;">📋 INSTALACIÓN PASO A PASO</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-number">1</div>
+                    <h3>Opción A: Solo Juego</h3>
+                    <p>Abre <code>robofut_game.html</code> con tu navegador</p>
+                    <p style="margin-top: 10px; font-size: 0.9em; color: #aaa;">✓ Sin instalación requerida</p>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-number">2</div>
+                    <h3>Opción B: Con Servidor (Recomendado)</h3>
+                    <p>Abre terminal en esta carpeta y ejecuta:</p>
+                    <p style="margin: 10px 0; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 5px;"><code>npm install</code></p>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-number">3</div>
+                    <h3>Inicia el Servidor</h3>
+                    <p>En la misma terminal, ejecuta:</p>
+                    <p style="margin: 10px 0; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 5px;"><code>npm start</code></p>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-number">4</div>
+                    <h3>Accede al Juego</h3>
+                    <p>Abre en tu navegador:</p>
+                    <p style="margin: 10px 0; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 5px;"><code>http://localhost:3000</code></p>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-number">5</div>
+                    <h3>Conecta ESP32 (Opcional)</h3>
+                    <p>Usa <code>robofut_esp32.ino</code> en Arduino IDE para conectar robots reales</p>
+                    <p style="margin-top: 10px; font-size: 0.9em; color: #aaa;">Ver SETUP.md para instrucciones detalladas</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ARCHIVOS DEL PROYECTO -->
+        <section>
+            <h2 style="margin: 40px 0 20px; color: #00bfff;">📁 ARCHIVOS DEL PROYECTO</h2>
+            <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 5px; border-left: 4px solid #00bfff;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                        <td style="padding: 10px; color: #00bfff;">robofut_game.html</td>
+                        <td>Página principal del juego</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                        <td style="padding: 10px; color: #00bfff;">robofut_game.js</td>
+                        <td>Lógica del juego en 3D</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                        <td style="padding: 10px; color: #00bfff;">config.js</td>
+                        <td>Configuración personalizable</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                        <td style="padding: 10px; color: #00bfff;">server.js</td>
+                        <td>Servidor Node.js (opcional)</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                        <td style="padding: 10px; color: #00bfff;">package.json</td>
+                        <td>Dependencias del servidor</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                        <td style="padding: 10px; color: #ff9900;">robofut_esp32.ino</td>
+                        <td>Código para ESP32</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; color: #00bfff;">ROBOFUT_README.md</td>
+                        <td>Documentación del juego</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+
+        <!-- TROUBLESHOOTING -->
+        <section>
+            <h2 style="margin: 40px 0 20px; color: #ff4444;">🐛 SOLUCIÓN DE PROBLEMAS</h2>
+            <div class="warning">
+                <strong>¿El juego no carga?</strong>
+                <ul style="margin-top: 10px; margin-left: 20px;">
+                    <li>Verifica que el navegador sea moderno (Chrome, Firefox, Safari, Edge)</li>
+                    <li>Asegúrate de tener WebGL habilitado</li>
+                    <li>Abre la consola (F12) para ver errores</li>
+                </ul>
+            </div>
+
+            <div class="warning">
+                <strong>¿Los controles no funcionan?</strong>
+                <ul style="margin-top: 10px; margin-left: 20px;">
+                    <li>Teclado: Click en la ventana del juego para asegurar el foco</li>
+                    <li>Gamepad: Conecta ANTES de abrir el juego</li>
+                    <li>ESP32: Verifica el Serial Monitor (115200 baud)</li>
+                </ul>
+            </div>
+
+            <div class="warning">
+                <strong>¿Bajo rendimiento/FPS bajo?</strong>
+                <ul style="margin-top: 10px; margin-left: 20px;">
+                    <li>Cierra otras pestañas del navegador</li>
+                    <li>Reinicia el navegador</li>
+                    <li>Intenta en otro navegador</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- CARACTERÍSTICAS -->
+        <section>
+            <h2 style="margin: 40px 0 20px; color: #00bfff;">✨ CARACTERÍSTICAS</h2>
+            <div class="grid">
+                <div>
+                    <ul class="features-list">
+                        <li>Juego 3v3 completamente funcional</li>
+                        <li>Física 3D realista (Babylon.js + Cannon.js)</li>
+                        <li>Vista cenital tipo Rocket League</li>
+                        <li>Controles dual (teclado + gamepad)</li>
+                        <li>Sistema de detección de goles automático</li>
+                    </ul>
+                </div>
+                <div>
+                    <ul class="features-list">
+                        <li>Temporizador de 5 minutos</li>
+                        <li>Marcador en tiempo real</li>
+                        <li>Servidor WebSocket incluido</li>
+                        <li>Código ESP32 listo</li>
+                        <li>Configuración personalizable</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>🤖 RoboFut 3v3 Simulator v1.0</p>
+            <p>Hecho para practicar competencias de robótica</p>
+            <p style="margin-top: 20px;">
+                <a href="robofut_game.html" class="btn">🎮 JUGAR AHORA</a>
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

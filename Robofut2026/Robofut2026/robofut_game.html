@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoboFut 3v3 Simulator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background: #1a1a1a;
+            font-family: 'Arial', sans-serif;
+        }
+
+        #gameContainer {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        #ui {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .score-board {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 32px;
+            font-weight: bold;
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .team {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .team-blue {
+            color: #00bfff;
+        }
+
+        .team-red {
+            color: #ff4444;
+        }
+
+        .vs {
+            color: white;
+            font-size: 24px;
+        }
+
+        #info {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            max-width: 300px;
+            z-index: 100;
+            font-family: 'Courier New', monospace;
+        }
+
+        .controls-info {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 11px;
+            max-width: 280px;
+            z-index: 100;
+            font-family: 'Courier New', monospace;
+            border: 2px solid #00ff00;
+        }
+
+        .timer {
+            position: absolute;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 20px;
+            font-weight: bold;
+            z-index: 100;
+        }
+
+        .player-info {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            color: #00ff00;
+            padding: 12px 18px;
+            border-radius: 5px;
+            font-size: 13px;
+            z-index: 100;
+            font-family: 'Courier New', monospace;
+            border: 2px solid #00ff00;
+            font-weight: bold;
+        }
+
+        .goal-animation {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 80px;
+            font-weight: bold;
+            color: #ffff00;
+            text-shadow: 0 0 20px rgba(255, 255, 0, 0.8);
+            pointer-events: none;
+            animation: goalPulse 1s ease-out;
+            z-index: 200;
+        }
+
+        @keyframes goalPulse {
+            0% {
+                transform: translate(-50%, -50%) scale(0.5);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(2);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <canvas id="renderCanvas"></canvas>
+        <div id="ui">
+            <div class="score-board">
+                <div class="team team-blue">
+                    <span>BLUE</span>
+                    <span id="scoreBlue">0</span>
+                </div>
+                <div class="vs">vs</div>
+                <div class="team team-red">
+                    <span>RED</span>
+                    <span id="scoreRed">0</span>
+                </div>
+            </div>
+            <div class="timer" id="timer">5:00</div>
+            <div class="player-info" id="playerInfo">🎮 Conectando Gamepad...</div>
+            <div id="info">
+                <div>FPS: <span id="fps">60</span></div>
+                <div>Robot: <span id="robotName">-</span></div>
+            </div>
+            <div class="controls-info">
+                <div><strong>🎮 CONTROLES:</strong></div>
+                <div>Stick Izq: Movimiento</div>
+                <div>LB/RB: Girar paleta</div>
+                <div>A: Turbo</div>
+                <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #00ff00;">
+                  <strong>EQUIPOS:</strong>
+                </div>
+                <div id="teamsList" style="font-size: 0.8em; margin-top: 5px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="https://cdn.babylonjs.com/cannon-es6.js"></script>
+    <script src="https://cdn.babylonjs.com/materialsLibrary/babylonjs.materials.min.js"></script>
+    <script src="robofut_game.js"></script>
+</body>
+</html>
